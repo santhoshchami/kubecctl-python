@@ -1,0 +1,5 @@
+('/root/calbin/build/calkube/kubernetes-6.0.0_snapshot-py2.7.egg',
+ None,
+ set(['*.py', '*.pyc', '*.pyd', '*.pyo', '*.so', 'EGG-INFO']),
+ 'DATA',
+ [])
