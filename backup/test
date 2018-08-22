@@ -1,0 +1,7 @@
+cat test.txt | while read a b c d 
+do
+echo "this is the first column $a "
+echo "this is the second column $b "
+echo "this is the third column $c "
+echo "this is the fifth column $d "
+done

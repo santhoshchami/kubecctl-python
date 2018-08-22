@@ -1,0 +1,10 @@
+#
+metadata:
+    name: nginx
+    app: nginx
+    namespace: default
+    image: nginx
+spec:
+    replicas: 3
+    port: 80
+

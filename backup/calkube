@@ -1,0 +1,49 @@
+#!/usr/bin/python
+# 
+#Copyright 2018 The Authors.
+#Created at : April-2018
+#Description : Kubernetes API client
+
+import os
+import sys
+
+from kubernetes import client, config
+
+config.load_kube_config()
+
+v1 = client.CoreV1Api()
+
+# Function to call kubernetes API and get pods
+def get_pods(ns):
+    pod_list = v1.list_namespaced_pod (ns)
+    for pod in pod_list.items:
+        print("%s\t%s\t%s" % (pod.metadata.name, 
+                              pod.status.phase,
+                              pod.status.pod_ip))
+
+# Function to get nodes list
+#rm = v1.delete_namespaced_pod(name="busybox", namespace="default", body=client.V1DeleteOptions())
+def get_node(*args):
+    del_pod = v1.delete_namespaced_pod (
+					name="busybox",
+					namespace="default",
+					body=client.V1DeleteOptions())
+
+# condition for command line indexing 
+if __name__ == '__main__':
+    if len(sys.argv) !=4:  
+        print('Error: Required resource not specified')
+        sys.exit(-1)
+# Dictionary to map to functions for command line arrguments
+    operations_map = {'get': {'pods': get_pods,
+                              'nodes': get_node}
+                     }
+
+# Error hamdling for unsupported command line arrguments
+    try:
+        op_func = operations_map[sys.argv[1]][sys.argv[2]]
+    except KeyError:
+        print('Unsupported operation!')
+        sys.exit(-1)
+
+    op_func(sys.argv[-1])

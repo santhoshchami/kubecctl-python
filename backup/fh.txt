@@ -1,0 +1,5 @@
+name = nginx
+app = nginx
+port = 80
+tport = 9370
+namespace = default

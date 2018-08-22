@@ -1,0 +1,87 @@
+#!/usr/bin/python
+# 
+#Copyright 2018 The Authors.
+#Created at : April-2018
+#Description : Kubernetes API client
+
+import os
+import sys
+from json import loads
+
+from kubernetes import client, config
+
+config.load_kube_config()
+
+v1 = client.CoreV1Api()
+service = client.V1Service()
+service.api_version = "v1"
+service.kind = "Service"
+
+# Function to call kubernetes API and get pods
+def get_pods(ns):
+    pod_list = v1.list_namespaced_pod (ns)
+    for pod in pod_list.items:
+        print("%s\t%s\t%s" % (pod.metadata.name, 
+                              pod.status.phase,
+                              pod.status.pod_ip))
+
+
+def get_namespace(namespace):
+    try:
+    except:
+        return None
+# Function to delete pods
+def del_pods(*args):
+    namespace = get_namespace()
+    if not namespace:
+        print('Namespace not found')
+        return
+
+    namespaced_pod = get_pod(namespace, pod)
+    if not namespaced_pod:
+        print('POD not found in namespace')
+        return
+    try:
+       v1.delete_namespaced_pod (
+			      name=sys.argv[2],
+			      namespace=sys.argv[3],
+			      body=client.V1DeleteOptions())
+    except client.rest.ApiException as e:
+        if 'pod' in loads(e.body)['message']:
+            print("Error: POD %s not found" % name)
+        else:
+            print("Error: Namespace %s not found" % namespace)
+        return
+
+    print('POD deleted successfully!')
+
+# Function to delete service
+def del_svcs(*args):
+    try:
+       v1.delete_namespaced_service(
+                                 name=sys.argv[2],
+                                 namespace=sys.argv[3],
+                                 body=client.V1DeleteOptions())
+    except client.rest.ApiException:
+        print ("Error: Service" " " + name + " " "not found")
+        return
+
+    print('Service deleted successfully!')
+  
+# condition for command line indexing 
+if __name__ == '__main__':
+    if len(sys.argv) <2:  
+        print('Error: Required resource not specified')
+        sys.exit(-1)
+# Dictionary to map to functions for command line arguments
+    operations_map = {'get-pods': get_pods,
+                      'del-pods': del_pods,
+                      'del-svc': del_svcs}
+# Error handling for unsupported command line arguments
+    try:
+        op_func = operations_map[sys.argv[1]]
+    except KeyError:
+        print('Error: Unsupported command operation!')
+        sys.exit(-1)
+
+    op_func(sys.argv[-1])

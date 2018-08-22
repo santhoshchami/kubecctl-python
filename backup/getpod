@@ -1,0 +1,4 @@
+    operations_map = {'get': {'pods': get_pods,
+                              'nodes': get_node}
+                     }
+

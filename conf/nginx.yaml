@@ -1,0 +1,8 @@
+metadata:
+    name: nginx
+    app: nginx
+    namespace: default
+spec:
+    port: 80
+    target_port: 9370
+     
