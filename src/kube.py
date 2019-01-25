@@ -27,8 +27,6 @@ service = client.V1Service()
 service.api_version = "v1"
 service.kind = "Service"
 
-#------------------------> Class to kubernetes lifecycle management <----
-
 class calkube:
 
     '''
