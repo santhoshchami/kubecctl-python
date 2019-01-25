@@ -36,7 +36,6 @@ class calkube:
     Kubernetes API using config file
     '''
 
-#------------------------> get  functions <-------------------------------
 
     def getPods(*args):
         """
@@ -55,7 +54,6 @@ class calkube:
         except IndexError:
             print("Error: unknown command")
 
-#------------------------> create  functions <-------------------------------
 
     def create_deployment_object(*args):
         """
@@ -174,8 +172,6 @@ class calkube:
             print("Missing the required parameter")
 
 
-#------------------------> update deployment <------------------------------
-
 
     def update_deployment(self, api_instance, deployment):
         '''
@@ -222,7 +218,7 @@ class calkube:
 
             return
 
-#------------------------> delete  functions <-------------------------------
+
 
     def delPods(*args):
         """
